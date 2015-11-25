@@ -1,4 +1,5 @@
 class CollectionsController < ApplicationController
+  # can use a before action to set the collection instance variable
 
   def index
     @collections = Collection.all
@@ -15,6 +16,7 @@ class CollectionsController < ApplicationController
 
   def create
     @collection = Collection.new(collection_params)
+    # @collection = Collection.new(collection_params.merge(user: current_user))
 
     if @collection.save
       redirect_to collection_path(@collection)
@@ -40,6 +42,8 @@ class CollectionsController < ApplicationController
 
   def destroy
     @collection = Collection.find(params[:id])
+    # if you associate a user w/ collection you can restrict who deletes
+    # if @collection.user == current_user
     @collection.destroy
     redirect_to collections_path
   end

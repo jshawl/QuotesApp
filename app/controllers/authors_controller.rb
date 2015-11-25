@@ -6,7 +6,7 @@ class AuthorsController < ApplicationController
 
   def show
     @author=Author.find(params[:id])
-    @quotes = Quote.all.where(author_id:@author.id)
+    @quotes = Quote.all.where(author_id:@author.id) # or @author.quotes
   end
 
   def new

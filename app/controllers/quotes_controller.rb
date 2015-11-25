@@ -7,7 +7,9 @@ class QuotesController < ApplicationController
     elsif params[:collection_id]
       @collection = Collection.find(params[:collection_id])
       @quotes = @collection.quotes
-      render 'collection_index'
+      render 'collection_index' # can this be just index.html.erb? i.e. reuse your index view
+      # also I'm looking at config routes and thinking this block could be moved to collection controller
+      # show page
     else
       @quotes = Quote.all
       render 'no_author_index'
@@ -19,7 +21,7 @@ class QuotesController < ApplicationController
     if @quote.author
       render 'show'
     else
-      render 'no_author_show'
+      render 'no_author_show' # recommend moving this to conditional in view
     end
   end
 
@@ -28,7 +30,7 @@ class QuotesController < ApplicationController
       @quote=Quote.new
     else
       @quote=Quote.new
-      render 'no_author_new'
+      render 'no_author_new' # same as above
     end
   end
 
@@ -37,10 +39,10 @@ class QuotesController < ApplicationController
   end
 
   def create
-    binding.pry
     if params[:author_id]
       @author = Author.find(params[:author_id])
       @quote = @author.quotes.new(quote_params)
+      # aboe three lines are not necessary if submitting rails' `form_for`
     elsif params[:quote][:author_id]
       if Author.find_by(name:params[:quote][:author_id])
         @author=Author.find_by(name:params[:quote][:author_id])
@@ -52,6 +54,10 @@ class QuotesController < ApplicationController
     else
       @quote = Quote.new(quote_params)
     end
+
+    # check out find_or_create_by
+    # http://apidock.com/rails/v4.0.2/ActiveRecord/Relation/find_or_create_by
+    # Also, you can move this logic to your quote model. More comments there
 
     if @quote.save
       redirect_to quote_path(@quote)

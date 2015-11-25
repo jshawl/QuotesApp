@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20151118134915) do
   create_table "collections", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    # should belong to user
     t.string   "title"
   end
 

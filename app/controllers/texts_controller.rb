@@ -1,4 +1,5 @@
 class TextsController < ApplicationController
+  # hidden feature? Recommend moving to a feature branch / deleting
 
   def index
     @texts = Text.all
